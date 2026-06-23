@@ -1,1 +1,1 @@
-# FanterGameBot
+FanterGameBot
