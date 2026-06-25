@@ -1,112 +1,22 @@
-from telegram import ReplyKeyboardMarkup, Update
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    MessageHandler,
-    ContextTypes,
-    filters,
-)
-import random
 import os
-TOKEN = os.getenv ("8915110177:AAE14FZDUgJsXGuyf_C5Z-dJO6Vj0OQcfPI")
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-MAIN_MENU = ReplyKeyboardMarkup(
-    [
-        ["🎮 Игры", "ℹ️ Помощь"]
-    ],
-    resize_keyboard=True
-)
-
-GAMES_MENU = ReplyKeyboardMarkup(
-    [
-        ["✂️ Камень Ножницы Бумага"],
-        ["⭕ Крестики Нолики"],
-        ["🪙 Орёл или Решка"],
-        ["🎯 Русская Рулетка"],
-        ["🔙 Назад"]
-    ],
-    resize_keyboard=True
-)
-
-KNB_MENU = ReplyKeyboardMarkup(
-    [
-        ["🪨 Камень", "✂️ Ножницы", "📄 Бумага"],
-        ["🔙 Назад"]
-    ],
-    resize_keyboard=True
-)
+TOKEN = os.getenv("8915110177:AAE14FZDUgJsXGuyf_C5Z-dJO6Vj0OQcfPI")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "🎮 Добро пожаловать в FanterGameBot!",
-        reply_markup=MAIN_MENU
-    )
+    await update.message.reply_text("Привет! Бот работает.")
 
-async def messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
+def main():
+    if not TOKEN:
+        raise ValueError("Переменная TOKEN не найдена!")
 
-    if text == "🎮 Игры":
-        await update.message.reply_text(
-            "Выберите игру:",
-            reply_markup=GAMES_MENU
-        )
+    app = Application.builder().token(TOKEN).build()
 
-    elif text == "ℹ️ Помощь":
-        await update.message.reply_text(
-            "👨‍💻 Поддержка:\n@azamat0158"
-        )
+    app.add_handler(CommandHandler("start", start))
 
-    elif text == "🔙 Назад":
-        await update.message.reply_text(
-            "🏠 Главное меню",
-            reply_markup=MAIN_MENU
-        )
+    print("Бот запущен...")
+    app.run_polling()
 
-    elif text == "✂️ Камень Ножницы Бумага":
-        await update.message.reply_text(
-            "Выберите вариант:",
-            reply_markup=KNB_MENU
-        )
-
-    elif text in ["🪨 Камень", "✂️ Ножницы", "📄 Бумага"]:
-
-        bot_choice = random.choice(
-            ["🪨 Камень", "✂️ Ножницы", "📄 Бумага"]
-        )
-
-        await update.message.reply_text(
-            f"🤖 Бот выбрал:\n{bot_choice}"
-        )
-
-    elif text == "🪙 Орёл или Решка":
-        result = random.choice(["🦅 Орёл", "🪙 Решка"])
-
-        await update.message.reply_text(
-            f"Результат:\n{result}"
-        )
-
-    elif text == "⭕ Крестики Нолики":
-        await update.message.reply_text(
-            "🚧 Крестики-нолики скоро будут добавлены."
-        )
-
-    elif text == "🎯 Русская Рулетка":
-        result = random.choice(
-            [
-                "✅ Повезло!",
-                "💥 Вы проиграли!"
-            ]
-        )
-
-        await update.message.reply_text(result)
-
-app = Application.builder().token(TOKEN).build()
-
-app.add_handler(CommandHandler("start", start))
-app.add_handler(
-    MessageHandler(filters.TEXT & ~filters.COMMAND, messages)
-)
-
-print("FanterGameBot запущен")
-
-app.run_polling()
+if __name__ == "__main__":
+    main()
