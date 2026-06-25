@@ -8,7 +8,6 @@ from telegram.ext import (
 )
 import random
 import os
-
 TOKEN = os.getenv ("8915110177:AAE14FZDUgJsXGuyf_C5Z-dJO6Vj0OQcfPI")
 
 MAIN_MENU = ReplyKeyboardMarkup(
