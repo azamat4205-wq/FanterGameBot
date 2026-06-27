@@ -1,13 +1,69 @@
-import os
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram import (
+    Update,
+    ReplyKeyboardMarkup
+)
 
-TOKEN = os.getenv("TOKEN")
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes
+)
+
+from config import TOKEN
+from database import register
+
+menu = ReplyKeyboardMarkup(
+    [
+        ["🎮 Игры"],
+        ["👤 Профиль", "🎒 Инвентарь"],
+        ["📦 Кейсы", "🏆 Топ"],
+        ["🎁 Ежедневный бонус"],
+        ["🎟️ Коды", "❓ Помощь"]
+    ],
+    resize_keyboard=True
+)
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Бот работает!")
 
-app = Application.builder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
+    register(update.effective_user)
 
-app.run_polling()
+    text = f"""
+❤️🖤 Добро пожаловать в FanterGameBot!
+
+🎮 Здесь тебя ждут:
+• Мини-игры
+• Кейсы
+• Рамки
+• Монеты
+• Топ игроков
+
+🔥 Желаем удачи!
+
+Выбери раздел ниже 👇
+"""
+
+    await update.message.reply_text(
+        text,
+        reply_markup=menu
+    )
+
+
+def main():
+
+    app = Application.builder().token(TOKEN).build()
+
+    app.add_handler(
+        CommandHandler(
+            "start",
+            start
+        )
+    )
+
+    print("Бот запущен!")
+
+    app.run_polling()
+
+
+if __name__ == "__main__":
+    main()
