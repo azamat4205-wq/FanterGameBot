@@ -28,20 +28,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     update.effective_user.username or update.effective_user.first_name
     )
 
-    text = f"""
-❤️🖤 Добро пожаловать в FanterGameBot!
-
-🎮 Здесь тебя ждут:
-• Мини-игры
-• Кейсы
-• Рамки
-• Монеты
-• Топ игроков
-
-🔥 Желаем удачи!
-
-Выбери раздел ниже 👇
-"""
+    await update.message.reply_text(
+    f"👋 Привет, {update.effective_user.first_name}!\n\n"
+    "Добро пожаловать в FanterGameBot!\n"
+    "Выбирай раздел ниже 👇",
+    reply_markup=menu
+    )
 
     await update.message.reply_text(
         text,
