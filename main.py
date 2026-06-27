@@ -49,7 +49,9 @@ def main():
             start
         )
     )
-
+    
+app.add_handler(MessageHandler(filters.Regex("^👤 Профиль$"), profile))
+    
     print("Бот запущен!")
 
     app.run_polling()
