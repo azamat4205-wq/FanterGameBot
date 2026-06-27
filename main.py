@@ -57,3 +57,26 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = get_user(update.effective_user.id)
+
+    if not user:
+        await update.message.reply_text("❌ Профиль не найден.")
+        return
+
+    text = f"""
+👤 <b>ПРОФИЛЬ</b>
+
+🆔 ID: {user[0]}
+📛 Имя: {user[1]}
+
+💰 Монеты: {user[2]}
+🏆 Победы: {user[3]}
+❌ Поражения: {user[4]}
+
+🎁 Кейсов: 0
+🖼 Рамка: Нет
+"""
+
+    await update.message.reply_text(text, parse_mode="HTML")
