@@ -29,3 +29,13 @@ def add_user(user_id, username):
 def get_user(user_id):
     cursor.execute("SELECT * FROM users WHERE user_id=?", (user_id,))
     return cursor.fetchone()
+
+def get_user(user_id):
+    conn = sqlite3.connect("database.db")
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+    user = cur.fetchone()
+
+    conn.close()
+    return user
