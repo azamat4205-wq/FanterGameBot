@@ -6,7 +6,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import BOT_TOKEN, PORT, ADMIN_IDS
 from database import init_db, get_or_create_user, check_daily_bonus, get_top_users, redeem_code, create_code
 from keyboards import main_menu, games_menu, after_game
-import games.coin_flip
+import coin_flip
 # сюда позже можно будет добавить другие игры, если допишешь их логику
 
 logging.basicConfig(level=logging.INFO)
