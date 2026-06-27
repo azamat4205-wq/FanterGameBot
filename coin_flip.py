@@ -15,4 +15,4 @@ async def play_coin_flip(cb: types.CallbackQuery):
         text = f"���ёл и решка: выпало **«{result}»**! Ты победил! +{reward} монет."
     else:
         await add_loss(cb.from_user.id)
-        text =
+        text = "🪙 Подбрасываю монетку... Жди результат!"
