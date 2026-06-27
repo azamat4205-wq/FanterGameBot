@@ -10,7 +10,7 @@ from telegram.ext import (
 )
 
 from config import TOKEN
-from database import register
+from database import add_user, get_user
 
 menu = ReplyKeyboardMarkup(
     [
