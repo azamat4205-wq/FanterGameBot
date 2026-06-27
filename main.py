@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from config import BOT_TOKEN, PORT, ADMIN_IDS
+from config import PORT, ADMIN_IDS
 from database import init_db, get_or_create_user, check_daily_bonus, get_top_users, redeem_code, create_code
 from keyboards import main_menu, games_menu, after_game
 import coin_flip
