@@ -10,7 +10,6 @@ import coin_flip
 # сюда позже можно будет добавить другие игры, если допишешь их логику
 
 logging.basicConfig(level=logging.INFO)
-bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 # --- Инициализация БД при старте ---
