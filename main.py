@@ -26,7 +26,10 @@ menu = ReplyKeyboardMarkup(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    register(update.effective_user)
+    add_user(
+    update.effective_user.id,
+    update.effective_user.username or update.effective_user.first_name
+    )
 
     text = f"""
 ❤️🖤 Добро пожаловать в FanterGameBot!
