@@ -1,11 +1,9 @@
 from telegram import Update, ReplyKeyboardMarkup
-    ReplyKeyboardMarkup
-)
 
 from telegram.ext import (
     Application,
     CommandHandler,
-    ContextTypes
+    ContextTypes,
 )
 
 from config import TOKEN
