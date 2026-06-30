@@ -7,7 +7,6 @@ from database import init_db
 from handlers import router
 
 bot = Bot(BOT_TOKEN)
-
 dp = Dispatcher()
 
 
