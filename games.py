@@ -77,3 +77,32 @@ def remove_room(code: str):
         players.pop(room["player2"], None)
 
     rooms.pop(code, None)
+    
+def is_in_game(user_id: int):
+    return user_id in players
+
+
+def get_room_by_code(code: str):
+    return rooms.get(code)
+
+
+def get_enemy(user_id: int):
+    room = get_room(user_id)
+
+    if not room:
+        return None
+
+    if room["creator"] == user_id:
+        return room["player2"]
+
+    return room["creator"]
+
+
+def start_game(code: str, game_name: str):
+    if code not in rooms:
+        return False
+
+    rooms[code]["game"] = game_name
+    rooms[code]["started"] = True
+
+    return True
