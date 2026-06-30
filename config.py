@@ -11,3 +11,4 @@ if not BOT_TOKEN:
 
 if not BOT_USERNAME:
     raise ValueError("BOT_USERNAME не найден!")
+BOT_LINK = f"https://t.me/{BOT_USERNAME}"
