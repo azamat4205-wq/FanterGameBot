@@ -6,15 +6,17 @@ DB_NAME = "bot.db"
 async def init_db():
     async with aiosqlite.connect(DB_NAME) as db:
         await db.execute("""
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS users(
             user_id INTEGER PRIMARY KEY,
             username TEXT,
             first_name TEXT,
             wins INTEGER DEFAULT 0,
             losses INTEGER DEFAULT 0,
-            games INTEGER DEFAULT 0
+            games INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """)
+
         await db.commit()
 
 
@@ -24,9 +26,8 @@ async def add_user(user):
             "SELECT user_id FROM users WHERE user_id = ?",
             (user.id,)
         )
-        exists = await cursor.fetchone()
 
-        if not exists:
+        if await cursor.fetchone() is None:
             await db.execute(
                 """
                 INSERT INTO users
@@ -73,12 +74,15 @@ async def add_loss(user_id):
         await db.commit()
 
 
-async def get_top():
+async def get_top(limit=10):
     async with aiosqlite.connect(DB_NAME) as db:
-        cursor = await db.execute("""
-        SELECT first_name, wins
-        FROM users
-        ORDER BY wins DESC
-        LIMIT 10
-        """)
+        cursor = await db.execute(
+            """
+            SELECT first_name, wins
+            FROM users
+            ORDER BY wins DESC
+            LIMIT ?
+            """,
+            (limit,)
+        )
         return await cursor.fetchall()
