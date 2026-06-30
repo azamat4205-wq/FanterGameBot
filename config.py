@@ -7,7 +7,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 
 if not BOT_TOKEN:
-    raise ValueError("❌ BOT_TOKEN не найден!")
+    raise ValueError("BOT_TOKEN не найден!")
 
 if not BOT_USERNAME:
-    raise ValueError("❌ BOT_USERNAME не найден!")
+    raise ValueError("BOT_USERNAME не найден!")
