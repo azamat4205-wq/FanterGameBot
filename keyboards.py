@@ -1,26 +1,69 @@
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.types import (
+    ReplyKeyboardMarkup,
+    KeyboardButton,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton
+)
 
 
 def main_menu():
-    kb = ReplyKeyboardBuilder()
-
-    kb.button(text="🎮 Играть")
-    kb.button(text="👤 Профиль")
-    kb.button(text="🏆 Рейтинг")
-    kb.button(text="📩 Помощь")
-
-    kb.adjust(2, 2)
-
-    return kb.as_markup(resize_keyboard=True)
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="🎮 Играть"),
+                KeyboardButton(text="👤 Профиль")
+            ],
+            [
+                KeyboardButton(text="🏆 Рейтинг"),
+                KeyboardButton(text="📩 Помощь")
+            ]
+        ],
+        resize_keyboard=True
+    )
 
 
 def play_menu():
-    kb = ReplyKeyboardBuilder()
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="🤖 Играть с ботом")
+            ],
+            [
+                KeyboardButton(text="👥 Играть с другом")
+            ],
+            [
+                KeyboardButton(text="🔙 Назад")
+            ]
+        ],
+        resize_keyboard=True
+    )
 
-    kb.button(text="🤖 Играть с ботом")
-    kb.button(text="👥 Играть с другом")
-    kb.button(text="🔙 Назад")
 
-    kb.adjust(1)
+def back_menu():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text="🔙 Назад")
+            ]
+        ],
+        resize_keyboard=True
+    )
 
-    return kb.as_markup(resize_keyboard=True)
+
+def room_keyboard(room_id):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="📨 Пригласить друга",
+                    url=f"https://t.me/FanterGameBot?start=room_{room_id}"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="❌ Отменить",
+                    callback_data="cancel_room"
+                )
+            ]
+        ]
+    )
