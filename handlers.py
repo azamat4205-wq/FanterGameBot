@@ -43,12 +43,13 @@ async def bot_game(message: Message):
 async def friend_game(message: Message):
     code = create_room(message.from_user.id)
 
+    link = f"{BOT_LINK}?start=room_{code}"
+
     await message.answer(
-        f"🎮 Комната создана!\n\n"
-        f"Код комнаты:\n"
-        f"`{code}`\n\n"
-        "Скоро появится приглашение по ссылке.",
-        parse_mode="Markdown"
+        "🎮 Комната создана!\n\n"
+        f"🆔 Код: {code}\n\n"
+        "Нажми кнопку ниже и отправь ссылку другу 👇",
+        reply_markup=room_keyboard(link)
     )
 
 
