@@ -4,6 +4,7 @@ from aiogram.types import Message
 
 from database import add_user, get_user, get_top
 from keyboards import main_menu, play_menu
+from games import create_room
 
 router = Router()
 
@@ -12,11 +13,14 @@ router = Router()
 async def start(message: Message):
     await add_user(message.from_user)
 
+    text = (
+        f"🎮 Добро пожаловать, {message.from_user.first_name}!\n\n"
+        "Выбери действие ниже 👇"
+    )
+
     await message.answer(
-        f"🎮 <b>Добро пожаловать, {message.from_user.first_name}!</b>\n\n"
-        "Выберите действие ниже 👇",
-        reply_markup=main_menu(),
-        parse_mode="HTML"
+        text,
+        reply_markup=main_menu()
     )
 
 
@@ -28,16 +32,35 @@ async def play(message: Message):
     )
 
 
+@router.message(F.text == "🤖 Играть с ботом")
+async def bot_game(message: Message):
+    await message.answer(
+        "🤖 Скоро здесь появятся игры с ботом!"
+    )
+
+
+@router.message(F.text == "👥 Играть с другом")
+async def friend_game(message: Message):
+    code = create_room(message.from_user.id)
+
+    await message.answer(
+        f"🎮 Комната создана!\n\n"
+        f"Код комнаты:\n"
+        f"`{code}`\n\n"
+        "Скоро появится приглашение по ссылке.",
+        parse_mode="Markdown"
+    )
+
+
 @router.message(F.text == "👤 Профиль")
 async def profile(message: Message):
     user = await get_user(message.from_user.id)
 
     await message.answer(
-        f"👤 <b>{user[2]}</b>\n\n"
-        f"🏆 Побед: <b>{user[3]}</b>\n"
-        f"💀 Поражений: <b>{user[4]}</b>\n"
-        f"🎮 Всего игр: <b>{user[5]}</b>",
-        parse_mode="HTML"
+        f"👤 {user[2]}\n\n"
+        f"🏆 Побед: {user[3]}\n"
+        f"💀 Поражений: {user[4]}\n"
+        f"🎮 Всего игр: {user[5]}"
     )
 
 
@@ -45,18 +68,19 @@ async def profile(message: Message):
 async def rating(message: Message):
     top = await get_top()
 
-    text = "🏆 <b>Топ игроков</b>\n\n"
+    text = "🏆 Топ игроков\n\n"
 
-    for i, player in enumerate(top, start=1):
+    for i, player in enumerate(top, 1):
         text += f"{i}. {player[0]} — {player[1]} побед\n"
 
-    await message.answer(text, parse_mode="HTML")
+    await message.answer(text)
 
 
 @router.message(F.text == "📩 Помощь")
 async def help_cmd(message: Message):
     await message.answer(
-        "📩 По всем вопросам:\n\n@azamat0158"
+        "📩 Помощь\n\n"
+        "Связь: @azamat0158"
     )
 
 
