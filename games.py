@@ -5,18 +5,21 @@ rooms = {}
 players = {}
 
 
-def generate_room_id():
+def generate_room_code():
     while True:
-        room_id = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
-        if room_id not in rooms:
-            return room_id
+        code = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        if code not in rooms:
+            return code
 
 
 def create_room(user_id: int):
-    room_id = generate_room_id()
+    if user_id in players:
+        return players[user_id]
 
-    rooms[room_id] = {
-        "id": room_id,
+    code = generate_room_code()
+
+    rooms[code] = {
+        "code": code,
         "creator": user_id,
         "player2": None,
         "game": None,
@@ -24,19 +27,19 @@ def create_room(user_id: int):
         "started": False,
         "chat_id": None,
         "message_id": None,
-        "play_again": False
+        "data": {}
     }
 
-    players[user_id] = room_id
+    players[user_id] = code
 
-    return room_id
+    return code
 
 
-def join_room(room_id: str, user_id: int):
-    if room_id not in rooms:
+def join_room(code: str, user_id: int):
+    if code not in rooms:
         return False
 
-    room = rooms[room_id]
+    room = rooms[code]
 
     if room["started"]:
         return False
@@ -48,39 +51,29 @@ def join_room(room_id: str, user_id: int):
     room["started"] = True
     room["turn"] = random.choice([room["creator"], room["player2"]])
 
-    players[user_id] = room_id
+    players[user_id] = code
 
     return True
 
 
 def get_room(user_id: int):
-    room_id = players.get(user_id)
+    code = players.get(user_id)
 
-    if not room_id:
+    if not code:
         return None
 
-    return rooms.get(room_id)
+    return rooms.get(code)
 
 
-def remove_room(room_id: str):
-    room = rooms.get(room_id)
-
-    if not room:
-        return
-
-    if room["creator"] in players:
-        del players[room["creator"]]
-
-    if room["player2"] in players:
-        del players[room["player2"]]
-
-    del rooms[room_id]
-
-
-def leave_game(user_id: int):
-    room = get_room(user_id)
+def remove_room(code: str):
+    room = rooms.get(code)
 
     if not room:
         return
 
-    remove_room(room["id"])
+    players.pop(room["creator"], None)
+
+    if room["player2"]:
+        players.pop(room["player2"], None)
+
+    rooms.pop(code, None)
