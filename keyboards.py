@@ -1,69 +1,55 @@
-from aiogram.types import (
-    ReplyKeyboardMarkup,
-    KeyboardButton,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton
-)
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
 
 def main_menu():
-    return ReplyKeyboardMarkup(
-        keyboard=[
-            [
-                KeyboardButton(text="🎮 Играть"),
-                KeyboardButton(text="👤 Профиль")
-            ],
-            [
-                KeyboardButton(text="🏆 Рейтинг"),
-                KeyboardButton(text="📩 Помощь")
-            ]
-        ],
-        resize_keyboard=True
-    )
+    kb = ReplyKeyboardBuilder()
+
+    kb.button(text="🎮 Играть")
+    kb.button(text="👤 Профиль")
+    kb.button(text="🏆 Рейтинг")
+    kb.button(text="📩 Помощь")
+
+    kb.adjust(2, 2)
+
+    return kb.as_markup(resize_keyboard=True)
 
 
 def play_menu():
-    return ReplyKeyboardMarkup(
-        keyboard=[
-            [
-                KeyboardButton(text="🤖 Играть с ботом")
-            ],
-            [
-                KeyboardButton(text="👥 Играть с другом")
-            ],
-            [
-                KeyboardButton(text="🔙 Назад")
-            ]
-        ],
-        resize_keyboard=True
+    kb = ReplyKeyboardBuilder()
+
+    kb.button(text="🤖 Играть с ботом")
+    kb.button(text="👥 Играть с другом")
+    kb.button(text="🔙 Назад")
+
+    kb.adjust(1)
+
+    return kb.as_markup(resize_keyboard=True)
+
+
+def room_keyboard():
+    kb = InlineKeyboardBuilder()
+
+    kb.button(
+        text="❌ Отменить",
+        callback_data="cancel_room"
     )
 
+    return kb.as_markup()
 
-def back_menu():
-    return ReplyKeyboardMarkup(
-        keyboard=[
-            [
-                KeyboardButton(text="🔙 Назад")
-            ]
-        ],
-        resize_keyboard=True
+
+def replay_keyboard():
+    kb = InlineKeyboardBuilder()
+
+    kb.button(
+        text="🔄 Играть снова",
+        callback_data="play_again"
     )
 
-
-def room_keyboard(room_id):
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text="📨 Пригласить друга",
-                    url=f"https://t.me/FanterGameBot?start=room_{room_id}"
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="❌ Отменить",
-                    callback_data="cancel_room"
-                )
-            ]
-        ]
+    kb.button(
+        text="🚪 Выйти",
+        callback_data="leave_game"
     )
+
+    kb.adjust(2)
+
+    return kb.as_markup()
