@@ -9,19 +9,24 @@ from games import create_room
 router = Router()
 
 
-@router.message(CommandStart())
-async def start(message: Message):
+@router.message(CommandStart(deep_link=True))
+async def start_with_link(message: Message, command: CommandObject):
     await add_user(message.from_user)
 
-    text = (
-        f"🎮 Добро пожаловать, {message.from_user.first_name}!\n\n"
-        "Выбери действие ниже 👇"
-    )
+    if command.args and command.args.startswith("room_"):
+        code = command.args.replace("room_", "")
 
-    await message.answer(
-        text,
-        reply_markup=main_menu()
-    )
+        if join_room(code, message.from_user.id):
+            await message.answer(
+                "🎉 Ты успешно подключился к комнате!\n\n"
+                "⌛ Ожидайте, сейчас появится выбор игры."
+            )
+        else:
+            await message.answer(
+                "❌ Не удалось подключиться к комнате.\n"
+                "Возможно, игра уже началась или комната не существует."
+            )
+        return
 
 
 @router.message(F.text == "🎮 Играть")
