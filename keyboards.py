@@ -101,3 +101,13 @@ def room_keyboard(link):
             ]
         ]
     )
+
+def mode_menu():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="🤖 Играть с ботом")],
+            [KeyboardButton(text="👥 Играть с другом")],
+            [KeyboardButton(text="🔙 Назад")]
+        ],
+        resize_keyboard=True
+    )
