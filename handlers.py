@@ -46,16 +46,19 @@ async def start(message: Message):
 
 
 @router.message(F.text == "🎮 Играть")
-@router.message(F.text == "🪙 Орёл и решка")
-async def coin_game(message: Message):
-    await message.answer(
-        "🪙 Орёл и решка\n\nВыберите режим игры:",
-        reply_markup=mode_menu()
-    )
 async def play(message: Message):
     await message.answer(
         "🎲 Выберите игру:",
         reply_markup=play_menu()
+    )
+
+
+@router.message(F.text == "🪙 Орёл и решка")
+async def coin_game(message: Message):
+    await message.answer(
+        "🪙 Орёл и решка\n\n"
+        "Выберите режим игры:",
+        reply_markup=mode_menu()
     )
 
 
