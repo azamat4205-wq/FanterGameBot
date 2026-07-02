@@ -1,10 +1,11 @@
 from aiogram import Router, F
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, CommandObject
 from aiogram.types import Message
 
 from database import add_user, get_user, get_top
-from keyboards import main_menu, play_menu
-from games import create_room
+from keyboards import main_menu, play_menu, room_keyboard
+from games import create_room, join_room
+from config import BOT_LINK
 
 router = Router()
 
@@ -27,6 +28,21 @@ async def start_with_link(message: Message, command: CommandObject):
                 "Возможно, игра уже началась или комната не существует."
             )
         return
+
+
+@router.message(CommandStart())
+async def start(message: Message):
+    await add_user(message.from_user)
+
+    text = (
+        f"🎮 Добро пожаловать, {message.from_user.first_name}!\n\n"
+        "Выбери действие ниже 👇"
+    )
+
+    await message.answer(
+        text,
+        reply_markup=main_menu()
+    )
 
 
 @router.message(F.text == "🎮 Играть")
@@ -96,6 +112,3 @@ async def back(message: Message):
         "🏠 Главное меню",
         reply_markup=main_menu()
     )
-
-from config import BOT_LINK
-from keyboards import room_keyboard
