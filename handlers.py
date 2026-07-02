@@ -48,7 +48,7 @@ async def start(message: Message):
 @router.message(F.text == "🎮 Играть")
 async def play(message: Message):
     await message.answer(
-        "🎲 Выберите режим игры:",
+        "🎲 Выберите игру:",
         reply_markup=play_menu()
     )
 
