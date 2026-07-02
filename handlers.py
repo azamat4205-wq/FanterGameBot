@@ -3,7 +3,7 @@ from aiogram.filters import CommandStart, CommandObject
 from aiogram.types import Message
 
 from database import add_user, get_user, get_top
-from keyboards import main_menu, play_menu, mode_menu room_keyboard
+from keyboards import main_menu, play_menu, mode_menu, room_keyboard
 from games import create_room, join_room
 from config import BOT_LINK
 
