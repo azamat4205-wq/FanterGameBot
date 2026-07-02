@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from aiogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton,
@@ -77,12 +79,18 @@ def games_menu():
 
 
 def room_keyboard(link):
+    share_link = (
+        "https://t.me/share/url?"
+        f"url={quote(link)}"
+        "&text=🎮 Присоединяйся к моей игровой комнате!"
+    )
+
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
                     text="📨 Пригласить друга",
-                    url=link
+                    url=share_link
                 )
             ],
             [
